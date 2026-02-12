@@ -8,12 +8,12 @@ const verify =
 
     async (req, res, next) => {
       try {
-        console.log("AUTH HEADER:", req.headers.authorization);
+        // console.log("AUTH HEADER:", req.headers.authorization);
         let token = String(req.headers.authorization || "")
           .replace(/bearer|jwt|Guest/i, "")
           .trim();
 
-        console.log('token: ', token);
+        // console.log('token: ', token);
         if (!token) {
           return res.status(401).send({
             statusCode: 401,

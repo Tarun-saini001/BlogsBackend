@@ -24,6 +24,10 @@ const messages = {
     PASSWORD_NOT_SET: "Password not set",
     PROFILE_FETCHED: "Profile fetched successfully",
     LOGOUT_SUCCESSFULLY: "Logout successfully",
-    FCM_TOKEN_SAVED:"firebase token saved"
+    FCM_TOKEN_SAVED:"Birebase token saved",
+    BLOG_ADD_SUCC:"Blog added successfuly",
+    BLOG_ALREADY_EXIST:"This blog already exists",
+    BLOGS_FETCHED_SUCCESSFULLY:"Blogs fetched successfully",
+    NAME_REQUIRED :"Name is required"
 }
 module.exports = { messages }

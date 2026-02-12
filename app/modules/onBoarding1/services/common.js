@@ -132,7 +132,9 @@ const createUserSession = async (
 
     // Convert mongoose doc to JS object
     const userObj = user.toObject ? user.toObject() : user;
+    console.log('userObj: ', userObj);
     const { password, __v, ...safeUser } = userObj;
+    console.log('...safeUser: ', safeUser);
 
     return {
         ...safeUser,

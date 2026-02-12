@@ -27,6 +27,7 @@ const { comparePassword, hashPassword } = require("../../../utils/common");
 const onBoarding = {
     signup: async (req) => {
         const body = req.body;
+       
         if (!body) {
             return {
                 success: false,
@@ -40,6 +41,13 @@ const onBoarding = {
                 success: false,
                 message: messages.VARIFIED_USER,
                 status: "validation"
+            }
+        }
+        if(!body.name){
+            return {
+                success: false,
+                message: messages.NAME_REQUIRED,
+                status: "badRequest"
             }
         }
         const otp = 1234;
@@ -205,7 +213,7 @@ const onBoarding = {
                 }
                 const hashedPASS = await bcrypt.hash(String(body.password), 10);
                 body.password = hashedPASS;
-                let query = { password: body.password, role: body.role };
+                let query = { password: body.password, role: body.role , name: body.name};
                 if (body.email != null) {
                     query.email = body.email;
                     query.isEmailVerified = true
