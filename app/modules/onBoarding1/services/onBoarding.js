@@ -4,7 +4,7 @@ const { buildQuery, checkVerifiedUser, checkUser, createUserSession, validateUse
 const dayjs = require("dayjs");
 
 
-const sendOtpToMail =require("../../../utils/email")
+const sendOtpToMail = require("../../../utils/email")
 //---------------------------------------------------------------------
 const { userModel } = require("../models/user");
 // const User = require("../models/user");
@@ -27,7 +27,7 @@ const { comparePassword, hashPassword } = require("../../../utils/common");
 const onBoarding = {
     signup: async (req) => {
         const body = req.body;
-       
+
         if (!body) {
             return {
                 success: false,
@@ -43,7 +43,7 @@ const onBoarding = {
                 status: "validation"
             }
         }
-        if(!body.name){
+        if (!body.name) {
             return {
                 success: false,
                 message: messages.NAME_REQUIRED,
@@ -213,7 +213,7 @@ const onBoarding = {
                 }
                 const hashedPASS = await bcrypt.hash(String(body.password), 10);
                 body.password = hashedPASS;
-                let query = { password: body.password, role: body.role , name: body.name};
+                let query = { password: body.password, role: body.role, name: body.name };
                 if (body.email != null) {
                     query.email = body.email;
                     query.isEmailVerified = true
@@ -306,7 +306,7 @@ const onBoarding = {
 
     updateProfile: async (req) => {
         const body = req.body
-      
+
 
         if (!body) {
             return {
@@ -371,7 +371,7 @@ const onBoarding = {
             }
         };
         console.log("reached `1");
-       const updatedUser =  await updateUser(req.user.id, body);
+        const updatedUser = await updateUser(req.user.id, body);
         console.log('updateUser: ', updatedUser);
         // const userExist = await userModel.findByIdAndUpdate(user.id, userData, { new: true });
         if (!updateUser || updateUser == null) {
@@ -490,7 +490,7 @@ const onBoarding = {
                     status: "validation"
                 }
             }
-        }   
+        }
 
         if (userExist.password && (await comparePassword(body.newPassword, userExist.password))) {
             return {
@@ -656,6 +656,56 @@ const onBoarding = {
     //         status: "success"
     //     }
     // }
+
+    register: async (req) => {
+        const body = req.body;
+
+        if (!body) {
+            return {
+                success: false,
+                message: messages.MISSING_BODY,
+                status: "badRequest"
+            }
+        }
+        const user = await checkVerifiedUser(req.body);
+        if (user) {
+            return {
+                success: false,
+                message: messages.VARIFIED_USER,
+                status: "validation"
+            }
+        }
+        if (!body.name) {
+            return {
+                success: false,
+                message: messages.NAME_REQUIRED,
+                status: "badRequest"
+            }
+        }
+          if (body.role === ROLES.ADMIN || body.role === ROLES.SUBADMIN) {
+                    return {
+                        success: false,
+                        message: messages.CAN_NOT_CREATE_ADMIN,
+                        status: "validation"
+                    }
+                }
+                const hashedPASS = await bcrypt.hash(String(body.password), 10);
+                body.password = hashedPASS;
+                // let query = { password: body.password, role: body.role, name: body.name };
+                // if (body.email != null) {
+                //     query.email = body.email;
+                //     query.isEmailVerified = true}
+                    const createdUser = await userModel.create(body);
+                console.log('createdUser: ', createdUser);
+               
+         const result = await createUserSession(createdUser, body, Number(createdUser.role), false, body.rememberMe);
+        return {
+            success: true,
+            message: messages.USER_REGISTERATION_SUCC,
+            data: result,
+            status: "success"
+        }
+    }
 
 };
 

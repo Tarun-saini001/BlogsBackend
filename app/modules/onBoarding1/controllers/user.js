@@ -47,4 +47,9 @@ const logout=asyncHandler(async (req,res) => {
      const response = await logout.getProfile(req);
     return sendResponse(res,response)
 })
-module.exports = { signup,verifyOtp,login,updateProfile,deleteAccount,changePassword,forgotPassword,getProfile,logout }
+const register=asyncHandler(async (req,res) => {
+     const response = await onBoarding.register(req);
+    return sendResponse(res,response)
+})
+
+module.exports = {signup,verifyOtp,login,updateProfile,deleteAccount,changePassword,forgotPassword,getProfile,logout,register }

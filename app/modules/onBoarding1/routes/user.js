@@ -7,6 +7,7 @@ const { signup, verifyOtp, login, updateProfile, deleteAccount, changePassword, 
 
 const { verify } = require("../../../middlewares/checkRole");
 const { USER_TYPES } = require("../../../config/constants");
+const { register } = require("../controllers/user");
 const router = express.Router();
 
 router.post("/signup", validate(signupValidation), signup)
@@ -18,4 +19,5 @@ router.post("/changePassword", verify(USER_TYPES.USER), validate(changePasswordV
     router.post("/forgotPassword", verify(USER_TYPES.USER), validate(forgotPasswordValidation), forgotPassword),
     router.get("/", verify(USER_TYPES.USER), getProfile),
     router.get("/logout", verify(USER_TYPES.USER), logout)
+    router.post("/register",register)
 module.exports = router;

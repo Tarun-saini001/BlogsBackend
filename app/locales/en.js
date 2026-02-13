@@ -28,6 +28,7 @@ const messages = {
     BLOG_ADD_SUCC:"Blog added successfuly",
     BLOG_ALREADY_EXIST:"This blog already exists",
     BLOGS_FETCHED_SUCCESSFULLY:"Blogs fetched successfully",
-    NAME_REQUIRED :"Name is required"
+    NAME_REQUIRED :"Name is required",
+    USER_REGISTERATION_SUCC : "User registered successfully"
 }
 module.exports = { messages }
