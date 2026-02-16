@@ -29,6 +29,11 @@ const messages = {
     BLOG_ALREADY_EXIST:"This blog already exists",
     BLOGS_FETCHED_SUCCESSFULLY:"Blogs fetched successfully",
     NAME_REQUIRED :"Name is required",
-    USER_REGISTERATION_SUCC : "User registered successfully"
+    USER_REGISTERATION_SUCC : "User registered successfully",
+    BLOG_UPDATED_SUCCESSFULLY:"Blog updated successfully",
+    ONLY_OWNER_CAN_EDIT:"Only owner can edit the blog",
+    ONLY_OWNER_CAN_DELETE:"Only owner can delete the blog",
+    BLOG_NOT_FOUND:"Blog not found",
+    BLOG_DELETED_SUCCESSFULLY:"Blog deleted successfully!"
 }
 module.exports = { messages }

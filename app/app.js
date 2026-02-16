@@ -16,10 +16,11 @@ const { errorHandler } = require('./middlewares/errorHandler');
 const app = express();
 
 const corsOptions = {
-  origin: process.env.ALLOW_ORIGIN || "*",
-  
+  origin: process.env.ALLOW_ORIGIN ,
+  credentials:true
 };
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

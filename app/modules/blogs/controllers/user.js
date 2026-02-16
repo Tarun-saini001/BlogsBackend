@@ -12,9 +12,26 @@ const getBlogs = asyncHandler(async (req,res) => {
     return sendResponse(res,response)
 })
 
+const getBlog = asyncHandler(async (req,res) => {
+    const response = await blogs.getBlog(req);
+    return sendResponse(res,response)
+})
+
 const myBlogs = asyncHandler(async (req,res) => {
     const response = await blogs.myBlogs(req);
     return sendResponse(res,response)
 })
 
-module.exports={addBlog, getBlogs, myBlogs}
+const editBlog = asyncHandler(async (req,res) => {
+    console.log("controller");
+    const response = await blogs.editBlog(req);
+    return sendResponse(res,response)
+})
+
+const deleteBlog = asyncHandler(async (req,res) => {
+    console.log("controller");
+    const response = await blogs.deleteBlog(req);
+    return sendResponse(res,response)
+})
+
+module.exports={addBlog, getBlogs, myBlogs,editBlog, deleteBlog,getBlog}
