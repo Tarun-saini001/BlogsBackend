@@ -1,8 +1,8 @@
 const z = require("zod");
 
 const signupValidation = z.object({
-    name: z.string().min(1, "Name is required").optional(),
-    userName: z.string().min(1, "Username is required").optional(),
+    name: z.string().trim().min(1, "Name is required").optional(),
+    userName: z.string().trim().min(1, "Username is required").optional(),
 
     age: z
         .number({ invalid_type_error: "Age must be a number" })
@@ -13,27 +13,33 @@ const signupValidation = z.object({
 
     email: z
         .string()
+        .trim()
         .email("Invalid email format").optional(),
 
     countryCode: z
         .string()
+        .trim()
         .regex(/^\+\d{1,3}$/)
         .optional(),
 
     phoneNumber: z
         .string()
+        .trim()
         .min(10, "Phone number must be at least 10 digits").optional(),
 
     password: z
         .string()
+        .trim()
         .min(6, "Password must be at least 6 characters"),
 
     address: z
         .string()
+        .trim()
         .min(1, "Address is required").optional(),
 
     jti: z
         .string()
+        .trim()
         .optional(),
 
     role: z
@@ -47,16 +53,20 @@ const signupValidation = z.object({
 const verifyOtpValidation = z.object({
     email: z
         .string()
+        .trim()
         .email("Invalid email format").optional(),
     countryCode: z
         .string()
+        .trim()
         .regex(/^\+\d{1,3}$/)
         .optional(),
     password: z
         .string()
+        .trim()
         .min(6, "Password must be at least 6 characters").optional(),
     phoneNumber: z
         .string()
+        .trim()
         .min(10, "Phone number must be at least 10 digits").optional(),
     otp: z
         .number(),
@@ -70,7 +80,7 @@ const verifyOtpValidation = z.object({
 })
 
 const loginValidation = z.object({
-    email: z.string().email("Invalid email format").optional(),
+    email: z.string().trim().email("Invalid email format").optional(),
 
     countryCode: z
         .string()
@@ -148,4 +158,23 @@ const forgotPasswordValidation = z.object({
     });
 
 
-module.exports = { signupValidation, verifyOtpValidation, loginValidation, updateProfileValidation, changePasswordValidation, forgotPasswordValidation }
+
+ const registerValiation = z.object({
+    name: z
+        .string()
+        .trim() // removes leading/trailing spaces
+        .min(3, { message: "Name must be at least 3 characters" }) 
+        .refine((val) => val.length > 0, { message: "Name cannot be only spaces" }),
+
+    email: z
+        .string()
+        .trim()
+        .email({ message: "Invalid email address" }),
+
+    password: z
+        .string()
+        .trim()
+        .min(6, { message: "Password must be at least 6 characters" }),
+});
+
+module.exports = { signupValidation, verifyOtpValidation, loginValidation, updateProfileValidation, changePasswordValidation, forgotPasswordValidation, registerValiation }

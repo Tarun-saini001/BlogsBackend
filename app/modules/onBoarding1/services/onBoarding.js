@@ -260,6 +260,7 @@ const onBoarding = {
     },
 
     login: async (req) => {
+        console.log("reachhhhhhh");
         const body = req.body;
         // console.log('body: ', body);
         if (!body) {
@@ -269,8 +270,9 @@ const onBoarding = {
                 status: "badRequest"
             }
         }
+        console.log("reach");
         const user = await checkVerifiedUser(req.body);
-        //console.log('user: ', user);
+        console.log('user: ', user);
         if (!user) {
             return {
                 success: false,
@@ -278,9 +280,10 @@ const onBoarding = {
                 status: "validation"
             }
         }
-        // console.log('body?.password: ', body?.password);
-        // console.log('user.password: ', user.password);
-        const isMatch = await comparePassword(body?.password, user.password)
+        console.log("Plain password:", body.password);
+        console.log("Hashed password:", user.password);
+        const isMatch = await comparePassword(body?.password, user.password);
+        console.log("Password match:", isMatch);
         if (!isMatch) {
             return {
                 success: false,
@@ -675,6 +678,10 @@ const onBoarding = {
                 status: "validation"
             }
         }
+        if (body.email != null) {
+            body.isEmailVerified = true;
+        }
+
         if (!body.name) {
             return {
                 success: false,
@@ -682,23 +689,23 @@ const onBoarding = {
                 status: "badRequest"
             }
         }
-          if (body.role === ROLES.ADMIN || body.role === ROLES.SUBADMIN) {
-                    return {
-                        success: false,
-                        message: messages.CAN_NOT_CREATE_ADMIN,
-                        status: "validation"
-                    }
-                }
-                const hashedPASS = await bcrypt.hash(String(body.password), 10);
-                body.password = hashedPASS;
-                // let query = { password: body.password, role: body.role, name: body.name };
-                // if (body.email != null) {
-                //     query.email = body.email;
-                //     query.isEmailVerified = true}
-                    const createdUser = await userModel.create(body);
-                console.log('createdUser: ', createdUser);
-               
-         const result = await createUserSession(createdUser, body, Number(createdUser.role), false, body.rememberMe);
+        if (body.role === ROLES.ADMIN || body.role === ROLES.SUBADMIN) {
+            return {
+                success: false,
+                message: messages.CAN_NOT_CREATE_ADMIN,
+                status: "validation"
+            }
+        }
+        const hashedPASS = await bcrypt.hash(String(body.password), 10);
+        body.password = hashedPASS;
+        // let query = { password: body.password, role: body.role, name: body.name };
+        // if (body.email != null) {
+        //     query.email = body.email;
+        //     query.isEmailVerified = true}
+        const createdUser = await userModel.create(body);
+        console.log('createdUser: ', createdUser);
+
+        const result = await createUserSession(createdUser, body, Number(createdUser.role), false, body.rememberMe);
         return {
             success: true,
             message: messages.USER_REGISTERATION_SUCC,

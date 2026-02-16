@@ -2,7 +2,7 @@ const express = require("express");
 const validate = require("../../../utils/validateRequest");
 
 
-const { signupValidation, verifyOtpValidation, loginValidation, updateProfileValidation, changePasswordValidation, forgotPasswordValidation } = require("../validation/onBoardings")
+const { signupValidation, verifyOtpValidation, loginValidation, updateProfileValidation, changePasswordValidation, forgotPasswordValidation, registerValiation } = require("../validation/onBoardings")
 const { signup, verifyOtp, login, updateProfile, deleteAccount, changePassword, forgotPassword, getProfile, logout } = require("../controllers/admin");
 
 const { verify } = require("../../../middlewares/checkRole");
@@ -19,5 +19,5 @@ router.post("/changePassword", verify(USER_TYPES.USER), validate(changePasswordV
     router.post("/forgotPassword", verify(USER_TYPES.USER), validate(forgotPasswordValidation), forgotPassword),
     router.get("/", verify(USER_TYPES.USER), getProfile),
     router.get("/logout", verify(USER_TYPES.USER), logout)
-    router.post("/register",register)
+router.post("/register", validate(registerValiation), register)
 module.exports = router;
