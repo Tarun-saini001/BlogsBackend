@@ -7,7 +7,8 @@ const { signup, verifyOtp, login, updateProfile, deleteAccount, changePassword, 
 
 const { verify } = require("../../../middlewares/checkRole");
 const { USER_TYPES } = require("../../../config/constants");
-const { register } = require("../controllers/user");
+const { register, uploadProfilePic } = require("../controllers/user");
+const uploadPic = require("../../../middlewares/uploadProfie");
 const router = express.Router();
 
 router.post("/signup", validate(signupValidation), signup)
@@ -20,4 +21,13 @@ router.post("/changePassword", verify(USER_TYPES.USER), validate(changePasswordV
     router.get("/", verify(USER_TYPES.USER), getProfile),
     router.get("/logout", verify(USER_TYPES.USER), logout)
 router.post("/register", validate(registerValiation), register)
+
+// upload profile 
+router.post(
+    "/uploadProfile",
+    verify(USER_TYPES.USER),
+    uploadPic.single("profilePic"),
+    uploadProfilePic
+);
+
 module.exports = router;

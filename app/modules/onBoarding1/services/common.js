@@ -190,6 +190,8 @@ const validateUserAuth = async (req) => {
     return { user, error: null };
 };
 
+function generateOTP() {
+  return Math.floor(1000 + Math.random() * 9000);
+}
 
-
-module.exports = { buildQuery, checkVerifiedUser, checkUser,sessionRole,createUserSession,validateUserAuth }
+module.exports = { buildQuery, checkVerifiedUser, checkUser,sessionRole,createUserSession,validateUserAuth,generateOTP }

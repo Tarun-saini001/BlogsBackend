@@ -82,7 +82,6 @@ const blogs = {
             data: blog,
             status: "success"
         };
-
     },
     myBlogs: async (req) => {
 

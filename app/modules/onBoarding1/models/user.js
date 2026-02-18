@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
         phoneNumber: { type: String },
         password: { type: String },
         address: { type: String },
+         profilePic: { type: String }, 
         jti: { type: String },
         isNumberVerified: { type: Boolean, default: false },
         isEmailVerified: { type: Boolean, default: false },

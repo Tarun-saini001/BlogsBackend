@@ -1,6 +1,6 @@
 
 const { messages } = require("../../../locales/en");
-const { buildQuery, checkVerifiedUser, checkUser, createUserSession, validateUserAuth } = require("./common");
+const { buildQuery, checkVerifiedUser, checkUser, createUserSession, validateUserAuth, generateOTP } = require("./common");
 const dayjs = require("dayjs");
 
 
@@ -19,7 +19,7 @@ const { sessionModel } = require("../models/session");
 const sendOtpToNumber = require("../../../utils/phoneNumber");
 
 const bcrypt = require("bcrypt");
-const { OTP_FOR, ROLES } = require("../../../config/constants");
+const { OTP_FOR, ROLES, RESPONSE_STATUS } = require("../../../config/constants");
 const { comparePassword, hashPassword } = require("../../../utils/common");
 // const { sequelize } = require("../../../config/db");
 
@@ -40,17 +40,17 @@ const onBoarding = {
             return {
                 success: false,
                 message: messages.VARIFIED_USER,
-                status: "validation"
+                code: RESPONSE_STATUS.ALREADY_EXISTS
             }
         }
         if (!body.name) {
             return {
                 success: false,
                 message: messages.NAME_REQUIRED,
-                status: "badRequest"
+                code :RESPONSE_STATUS.BAD_REQUEST
             }
         }
-        const otp = 1234;
+        const otp = generateOTP();
         const otpType = 1
         const expiry = dayjs().add(5, "minutes").toISOString();
         const hashedPASS = await bcrypt.hash(body.password.toString(), 10);
@@ -137,7 +137,7 @@ const onBoarding = {
                 status: "unautherized"
             }
         }
-        if (!body.otp === otp.otp) {
+        if (Number(body.otp) !== Number(otp.otp)) {
             return {
                 success: false,
                 message: messages.INVALID_OTP,
