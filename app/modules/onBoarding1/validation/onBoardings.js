@@ -102,19 +102,19 @@ const loginValidation = z.object({
     });
 
 const updateProfileValidation = z.object({
-    name: z.string().min(1, "Name is required"),
+    name: z.string().min(1, "Name is required").optional(),
 
     age: z.coerce
         .number({ invalid_type_error: "Age must be a number" })
         .int()
-        .min(1, "Age must be greater than 0"),
+        .min(1, "Age must be greater than 0").optional(),
 
     gender: z.coerce
         .number()
         .min(1, "Invalid gender")
-        .max(3, "Invalid gender"),
+        .max(3, "Invalid gender").optional(),
 
-    address: z.string().min(1, "Address is required"),
+    address: z.string().min(1, "Address is required").optional(),
 
     email: z.string().email("Invalid email format").optional(),
 

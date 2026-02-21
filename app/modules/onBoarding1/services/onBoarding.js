@@ -19,7 +19,7 @@ const { sessionModel } = require("../models/session");
 const sendOtpToNumber = require("../../../utils/phoneNumber");
 
 const bcrypt = require("bcrypt");
-const { OTP_FOR, ROLES, RESPONSE_STATUS } = require("../../../config/constants");
+const { OTP_FOR, ROLES, RESPONSE_STATUS, RESPONSE_STATUS_CODE } = require("../../../config/constants");
 const { comparePassword, hashPassword } = require("../../../utils/common");
 // const { sequelize } = require("../../../config/db");
 
@@ -423,7 +423,7 @@ const onBoarding = {
             return {
                 success: false,
                 message: messages.MISSING_BODY,
-                status: "badRequest"
+                code:RESPONSE_STATUS.BAD_REQUEST
             }
         }
         const result = await validateUserAuth(req);
@@ -431,7 +431,7 @@ const onBoarding = {
             return {
                 success: false,
                 message: messages.NOT_FOUND,
-                status: "validation"
+                code:RESPONSE_STATUS.RECORD_NOT_FOUND
             }
         }
         const user = result.user;
@@ -448,21 +448,21 @@ const onBoarding = {
             return {
                 success: false,
                 message: messages.NOT_FOUND,
-                status: "recordNotFound"
+               code:RESPONSE_STATUS.RECORD_NOT_FOUND
             }
         }
         if (!userExist.isEmailVerified) {
             return {
                 success: false,
                 message: messages.ACC_NOT_VERIFIED,
-                status: "badRequest"
+               code:RESPONSE_STATUS.BAD_REQUEST
             }
         }
         if (userExist.isBlocked) {
             return {
                 success: false,
                 message: messages.ACC_BLOCKED,
-                status: "badRequest"
+                code:RESPONSE_STATUS.BAD_REQUEST
             }
         }
 
@@ -490,7 +490,7 @@ const onBoarding = {
                 return {
                     success: false,
                     message: messages.OLD_PASSWORD_NOT_MATCH,
-                    status: "validation"
+                    code:RESPONSE_STATUS.BAD_REQUEST
                 }
             }
         }
@@ -499,7 +499,7 @@ const onBoarding = {
             return {
                 success: false,
                 message: messages.NEW_PASSWORD_SAME_AS_OLD_PASSWORD,
-                status: "validation"
+               code:RESPONSE_STATUS.VALIDATION_ERROR
             }
         }
         const hashed = await hashPassword(body.newPassword);
